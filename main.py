@@ -137,11 +137,4 @@ def read_key():
         return key
 
 
-def Encrypt_string(msg):
-    key = read_key()
-    fernet = Fernet(key)
-    encMessage = fernet.encrypt(msg.encode())
-    return encMessage
-    #b'gAAAAABjuA3GuKf51fmQ7ub3TQ54vlQv8Fft0afwq768y53ft2wc80E9r6G7v6kwc5tH6K1tSUjs3dAq_Jq95Wolh6yQbLyrZw=='
-    #b'gAAAAABjuA3GUFiPU-ELTr5EiEOnV_rbdzV-ktj7LOzcGVyK6BmCnhZ-uoqkCRpBkFP4HPKN8TfWO29beFzk5LkO1E7AdrW7bA=='
 login()
