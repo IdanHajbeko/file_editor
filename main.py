@@ -97,44 +97,67 @@ def FileEditor(FileName):
             text = ""
         f.write(text)
         line = line + 1
+    f.close()
 
 
 def Encrypt_file():
     t = "encrypt file"
     print(f"{t:.^20}")
     file_name = input("what file you want to encrypt: ").replace(" ", "").replace(".txt", "") + ".txt"
-    key = read_key()
-    fernet = Fernet(key)
     try:
-        with open(file_name, 'rb') as file:
-            original = file.read()
-        encrypted = fernet.encrypt(original)
-        with open(file_name, 'wb') as encrypted_file:
-            encrypted_file.write(encrypted)
+        key = read_key()
+        fernet = Fernet(key)
     except:
-        print("this file does not exit")
+        create_key()
+    else:
+        try:
+            with open(file_name, 'rb') as file:
+                original = file.read()
+            encrypted = fernet.encrypt(original)
+            with open(file_name, 'wb') as encrypted_file:
+                encrypted_file.write(encrypted)
+        except FileNotFoundError:
+            print("this file does not exit")
 
 
 def Decrypt_file():
     t = "decrypt file"
     print(f"{t:.^20}")
     file_name = input("what file you want to decrypt: ").replace(" ", "").replace(".txt", "") + ".txt"
-    key = read_key()
-    fernet = Fernet(key)
     try:
-        with open(file_name, 'rb') as file:
-            encrypted  = file.read()
-        decrypted = fernet.decrypt(encrypted)
-        with open(file_name, 'wb') as dec_file:
-            dec_file.write(decrypted)
+        key = read_key()
+        fernet = Fernet(key)
     except:
-        print("this file does not exit")
+        create_key()
+    else:
+        try:
+            with open(file_name, 'rb') as file:
+                encrypted  = file.read()
+            decrypted = fernet.decrypt(encrypted)
+            with open(file_name, 'wb') as dec_file:
+                dec_file.write(decrypted)
+        except FileNotFoundError:
+            print("this file does not exit")
+        except:
+            print("file need to be encrypted before decrypted")
+
 
 
 def read_key():
-    with open('filekey.key', 'rb') as filekey:
-        key = filekey.read()
-        return key
+    try:
+        with open('filekey.key', 'rb') as filekey:
+            key = filekey.read()
+            return key
+    except:
+        print("the key file is empty")
+
+
+def create_key():
+    print("there is no key")
+    print("creating a key now")
+    key = Fernet.generate_key()
+    with open('filekey.key', 'wb') as filekey:
+        filekey.write(key)
 
 
 login()
